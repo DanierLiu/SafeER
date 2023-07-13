@@ -12,7 +12,11 @@ import dlib
 import cv2
 import firebase_admin
 from firebase_admin import credentials, db, firestore
+import logging
 
+logging.basicConfig(filename='fatigue.log', filemode='w', format='%(asctime)s %(message)s')
+logger=logging.getLogger() 
+logger.setLevel(logging.DEBUG) 
 cred = credentials.Certificate("credentials.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
@@ -42,7 +46,7 @@ args = vars(ap.parse_args())
 # define two constants, one for the eye aspect ratio to indicate
 # blink and then a second constant for the number of consecutive
 # frames the eye must be below the threshold
-EYE_AR_THRESH = 0.3
+EYE_AR_THRESH = 0.27
 EYE_AR_CONSEC_FRAMES = 3
 # initialize the frame counters and the total number of blinks
 COUNTER = 0
@@ -113,6 +117,7 @@ while True:
 				if(endTime - startTime >= 3):
 					playsound('./wakeUp.mp3', False)
 					print('playing sound using playsound')
+					logger.warning("You showed some signs of fatigue/drowsiness.") 
 					COUNTER += 1
 				switch = 0
 		cv2.putText(frame, "EAR: {:.2f}".format(ear), (10, 30),
