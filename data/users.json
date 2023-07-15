@@ -3,8 +3,9 @@
         "operations": {
             "1625309472.357246": {
                 "opType": "heart",
-                "endTime": "1625309473.357246",
-                "fatigueLog": "csvOfTimestamps"
+                "endTime": "1725309473.357246",
+                "fatigueErrors": "1625309472.657246,1625349472.657246,1627309472.657246,1725305472.657246",
+                "equipmentErrors": "scalpel-1625309472.657246,forceps-1625349472.657246"
             }
         },
         "errorRecords": {

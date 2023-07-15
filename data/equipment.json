@@ -1,3 +1,12 @@
 {
-    "scalpel": false
+    "scalpel": {
+        "present": true,
+        "requested": false,
+        "locked": false
+    },
+    "forceps": {
+        "present": true,
+        "requested": false,
+        "locked": false
+    }
 }
