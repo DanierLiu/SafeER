@@ -1,12 +1,11 @@
 from flask import Flask
 import subprocess
 import time
-import firebase_admin
-from firebase_admin import credentials, db, firestore
+import sqlite3 as sqlite
+import json
 
-cred = credentials.Certificate("credentials.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+from common.constants import *
+
 app = Flask(__name__)
 
 @app.route("/", methods = ['POST'])
@@ -18,9 +17,21 @@ def hello_world():
     return "Success!"
 
 @app.route("/fatigue", methods = ['GET'])
-def get_fat():
-    doc_ref = db.collection(u'records').document(u'patient')
-    doc_ref.get().to_dict()[u'time']
-    doc_ref.get().to_dict()[u'fatigues']
+def get_fatigue_of_operation(users, user, operation_start_time):
+    return users[user][operation_start_time][KEY_FATIGUE_LOG]
 
-
+def read_in_app_data():
+    users_data, equipment_data
+    with open("users.json", "r") as read_users:
+        users_data = json.load(read_users)
+    with open("equipment.json", "r") as read_equipment:
+        equipment_data = json.load(read_equipment)
+    
+    if users_data is not None and equipment_data is not None:
+        return users_data, equipment_data
+    else:
+        raise IOError("Could not read in app data")
+    
+def main():
+    users_data, equipment_data = read_in_app_data()
+    print(get_fatigue_of_operation(users_data, "user", "1625309473.357246"))

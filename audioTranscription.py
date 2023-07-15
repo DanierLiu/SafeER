@@ -128,12 +128,7 @@ def listen_print_loop(responses, db):
 
         else:
             try:
-                if "fork" in (transcript + overwrite_chars):
-                    print('\nfork requested')
-                    doc_ref = db.collection(u'equipment').document(u'fork')
-                    doc_ref.update({u'requested':True})
-                
-                elif "scalpel" in (transcript + overwrite_chars):
+                if "scalpel" in (transcript + overwrite_chars):
                     print('\nscalpel requested')
                     doc_ref = db.collection(u'equipment').document(u'scalpel')
                     doc_ref.update({u'requested':True})    

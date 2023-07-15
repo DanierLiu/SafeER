@@ -1,0 +1,15 @@
+{
+    "user": {
+        "operations": {
+            "1625309472.357246": {
+                "opType": "heart",
+                "endTime": "1625309473.357246",
+                "fatigueLog": "csvOfTimestamps"
+            }
+        },
+        "errorRecords": {
+            "fatigueRate": "0",
+            "equipmentRate": 10
+        }
+    }
+}
