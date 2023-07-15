@@ -1,16 +1,8 @@
-import firebase_admin
-from firebase_admin import credentials, db, firestore
 import json
 import keyboard
 import asyncio
 import time
-
-
 from audioTranscription import *
-
-cred = credentials.Certificate("credentials.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
 
 doc_ref = db.collection(u'equipment').document(u'fork')
 doc_ref.update({u'requested':False})
