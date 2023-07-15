@@ -29,14 +29,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
-<<<<<<< HEAD
-    ],
-    "/procedure": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/procedure.js"
-=======
->>>>>>> refs/remotes/origin/main
     ]
   },
   "ampFirstPages": []
