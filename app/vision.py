@@ -4,23 +4,19 @@ from imutils.video import FileVideoStream
 from imutils.video import VideoStream
 from imutils import face_utils
 from playsound import playsound
+from common.constants import *
 import numpy as np
 import argparse
 import imutils
 import time
 import dlib
 import cv2
-import firebase_admin
-from firebase_admin import credentials, db, firestore
 import logging
 import tensorflow.keras
 
 logging.basicConfig(filename='fatigue.log', filemode='w', format='%(asctime)s %(message)s')
 logger=logging.getLogger() 
 logger.setLevel(logging.DEBUG) 
-cred = credentials.Certificate("credentials.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
 
 def eye_aspect_ratio(eye):
 	# compute the euclidean distances between the two sets of
@@ -47,7 +43,7 @@ def gen_labels():
     return labels
 
 
-def start_procedure(equipment_data):
+def start_procedure(user_data, equipment_data, user):
 	# ------------------------------------- #
 	# ------- Fatigue Process Setup ------- #
 	# ------------------------------------- #
@@ -198,6 +194,11 @@ def start_procedure(equipment_data):
 	cv2.destroyAllWindows()
 	vs.stop()
 	ENDING = time.time()
-	doc_ref = db.collection(u'records').document(u'patient')
-	doc_ref.update({u'time':ENDING - STARTING})
-	doc_ref.update({u'fatigues':COUNTER})
+
+	# Update operation data
+	user_data[user][KEY_OPERATIONS][startTime][KEY_END_TIME] = endTime
+	user_data[user][KEY_OPERATIONS][startTime][KEY_FATIGUE_ERRORS] = "" # TODO: track fatigue timestamps here
+	user_data[user][KEY_OPERATIONS][startTime][KEY_EQUIPMENT_ERRORS] = "" # TODO: track fatigue timestamps here
+	# Update user data
+	user_data[user][KEY_ERROR_RECORDS][KEY_FATIGUE_ERROR_COUNT] += COUNTER
+	user_data[user][KEY_ERROR_RECORDS][KEY_EQUIPMENT_ERROR_COUNT] += 0 # TODO: track equipment errors and up
