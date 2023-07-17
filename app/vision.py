@@ -18,6 +18,8 @@ logging.basicConfig(filename='fatigue.log', filemode='w', format='%(asctime)s %(
 logger=logging.getLogger() 
 logger.setLevel(logging.DEBUG) 
 
+random = 0
+
 def eye_aspect_ratio(eye):
 	# compute the euclidean distances between the two sets of
 	# vertical eye landmarks (x, y)-coordinates
@@ -33,7 +35,7 @@ def eye_aspect_ratio(eye):
 
 def gen_labels():
     labels = {}
-    with open("labels.txt", "r") as label:
+    with open("data/labels.txt", "r") as label:
         text = label.read()
         lines = text.split("\n")
         print(lines)
@@ -106,6 +108,9 @@ def start_procedure(user_data, equipment_data, user):
 
 	# loop over frames from the video stream
 	while True:
+		# ----------------------------- #
+		# ----- Fatigue Detection ----- #
+		# ----------------------------- #
 		# grab the frame from the threaded video file stream, resize
 		# it, and convert it to grayscale
 		# channels)
@@ -144,13 +149,18 @@ def start_procedure(user_data, equipment_data, user):
 			if ear > EYE_AR_THRESH:
 				if switch == 1:
 					if(endTime - startTime >= 3):
-						playsound('./wakeUp.mp3', False)
+						playsound('data/wakeUp.mp3', False)
 						print('playing sound using playsound')
 						logger.warning("You showed some signs of fatigue/drowsiness.") 
 						COUNTER += 1
 					switch = 0
 			cv2.putText(frame, "EAR: {:.2f}".format(ear), (10, 30),
 				cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+			
+		# --------------------------- #	
+		# ----- Equipment Check ----- #
+		# --------------------------- #
+
 		# Choose a suitable font
 		font = cv2.FONT_HERSHEY_SIMPLEX
 		ret, frame1 = image.read()
@@ -181,7 +191,7 @@ def start_procedure(user_data, equipment_data, user):
 		
 
         # Show the frame   
-		cv2.imshow('Frame', frame1)
+		cv2.imshow('Frame1', frame1)
 		# show the frame
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
@@ -194,7 +204,6 @@ def start_procedure(user_data, equipment_data, user):
 	cv2.destroyAllWindows()
 	vs.stop()
 	ENDING = time.time()
-
 	# Update operation data
 	user_data[user][KEY_OPERATIONS][startTime][KEY_END_TIME] = endTime
 	user_data[user][KEY_OPERATIONS][startTime][KEY_FATIGUE_ERRORS] = "" # TODO: track fatigue timestamps here
@@ -202,3 +211,4 @@ def start_procedure(user_data, equipment_data, user):
 	# Update user data
 	user_data[user][KEY_ERROR_RECORDS][KEY_FATIGUE_ERROR_COUNT] += COUNTER
 	user_data[user][KEY_ERROR_RECORDS][KEY_EQUIPMENT_ERROR_COUNT] += 0 # TODO: track equipment errors and up
+start_procedure(random)
