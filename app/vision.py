@@ -20,7 +20,6 @@ logging.basicConfig(filename='fatigue.log', filemode='w', format='%(asctime)s %(
 logger=logging.getLogger() 
 logger.setLevel(logging.DEBUG) 
 
-random = 0
 
 def eye_aspect_ratio(eye):
 	# compute the euclidean distances between the two sets of
@@ -219,11 +218,11 @@ def read_in_app_data():
     equipment_data = None
     
     current_path = os.path.dirname(__file__)
-    data_path = os.path.join(current_path, "..\\data")
+    data_path = os.path.join(current_path, "../data")
     
-    with open(data_path + "\\users.json", "r") as read_users:
+    with open(data_path + "/users.json", "r") as read_users:
         users_data = json.load(read_users)
-    with open(data_path + "\\equipment.json", "r") as read_equipment:
+    with open(data_path + "/equipment.json", "r") as read_equipment:
         equipment_data = json.load(read_equipment)
     
     if users_data is not None and equipment_data is not None:
