@@ -18,7 +18,7 @@ def hello_world():
 
 @app.route("/fatigue", methods = ['GET'])
 def get_fatigue_of_operation(users, user, operation_start_time):
-    return users[user][operation_start_time][KEY_FATIGUE_LOG]
+    return users[user][operation_start_time][KEY_FATIGUE_ERRORS]
 
 def read_in_app_data():
     users_data, equipment_data

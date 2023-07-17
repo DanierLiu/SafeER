@@ -9,8 +9,8 @@
             }
         },
         "errorRecords": {
-            "fatigueRate": "0",
-            "equipmentRate": 10
+            "fatigueErrorCount": "0",
+            "equipmentErrorCount": 10
         }
     }
 }
