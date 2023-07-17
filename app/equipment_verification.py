@@ -3,7 +3,7 @@ import keyboard
 import asyncio
 import time
 from audioTranscription import *
-from common.constants import *
+from app.constants import *
 
 def find_equipment_errors(equipment_data, equipment_errors):
     while True:

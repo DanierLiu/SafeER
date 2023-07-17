@@ -5,7 +5,7 @@ import sys
 import subprocess
 
 from google.cloud import speech
-from common.constants import *
+from app.constants import *
 
 import pyaudio
 from six.moves import queue

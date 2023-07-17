@@ -4,7 +4,7 @@ import time
 import sqlite3 as sqlite
 import json
 
-from common.constants import *
+from app.constants import *
 
 app = Flask(__name__)
 

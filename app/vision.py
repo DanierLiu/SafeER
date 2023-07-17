@@ -4,7 +4,7 @@ from imutils.video import FileVideoStream
 from imutils.video import VideoStream
 from imutils import face_utils
 from playsound import playsound
-from common.constants import *
+import constants
 import numpy as np
 import argparse
 import imutils
@@ -13,6 +13,8 @@ import dlib
 import cv2
 import logging
 import tensorflow.keras
+import json
+import os
 
 logging.basicConfig(filename='fatigue.log', filemode='w', format='%(asctime)s %(message)s')
 logger=logging.getLogger() 
@@ -205,10 +207,29 @@ def start_procedure(user_data, equipment_data, user):
 	vs.stop()
 	ENDING = time.time()
 	# Update operation data
-	user_data[user][KEY_OPERATIONS][startTime][KEY_END_TIME] = endTime
-	user_data[user][KEY_OPERATIONS][startTime][KEY_FATIGUE_ERRORS] = "" # TODO: track fatigue timestamps here
-	user_data[user][KEY_OPERATIONS][startTime][KEY_EQUIPMENT_ERRORS] = "" # TODO: track fatigue timestamps here
+	user_data[user][constants.KEY_OPERATIONS][startTime][constants.KEY_END_TIME] = endTime
+	user_data[user][constants.KEY_OPERATIONS][startTime][constants.KEY_FATIGUE_ERRORS] = "" # TODO: track fatigue timestamps here
+	user_data[user][constants.KEY_OPERATIONS][startTime][constants.KEY_EQUIPMENT_ERRORS] = "" # TODO: track fatigue timestamps here
 	# Update user data
-	user_data[user][KEY_ERROR_RECORDS][KEY_FATIGUE_ERROR_COUNT] += COUNTER
-	user_data[user][KEY_ERROR_RECORDS][KEY_EQUIPMENT_ERROR_COUNT] += 0 # TODO: track equipment errors and up
-start_procedure(random)
+	user_data[user][constants.KEY_ERROR_RECORDS][constants.KEY_FATIGUE_ERROR_COUNT] += COUNTER
+	user_data[user][constants.KEY_ERROR_RECORDS][constants.KEY_EQUIPMENT_ERROR_COUNT] += 0 # TODO: track equipment errors and up
+
+def read_in_app_data():
+    users_data = None
+    equipment_data = None
+    
+    current_path = os.path.dirname(__file__)
+    data_path = os.path.join(current_path, "..\\data")
+    
+    with open(data_path + "\\users.json", "r") as read_users:
+        users_data = json.load(read_users)
+    with open(data_path + "\\equipment.json", "r") as read_equipment:
+        equipment_data = json.load(read_equipment)
+    
+    if users_data is not None and equipment_data is not None:
+        return users_data, equipment_data
+    else:
+        raise IOError("Could not read in app data")
+
+users_data, equipment_data = read_in_app_data()
+start_procedure(users_data, equipment_data, "user")
