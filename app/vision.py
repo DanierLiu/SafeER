@@ -22,6 +22,8 @@ cred = credentials.Certificate("credentials.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
+random = 0
+
 def eye_aspect_ratio(eye):
 	# compute the euclidean distances between the two sets of
 	# vertical eye landmarks (x, y)-coordinates
@@ -37,7 +39,7 @@ def eye_aspect_ratio(eye):
 
 def gen_labels():
     labels = {}
-    with open("labels.txt", "r") as label:
+    with open("data/labels.txt", "r") as label:
         text = label.read()
         lines = text.split("\n")
         print(lines)
@@ -110,6 +112,9 @@ def start_procedure(equipment_data):
 
 	# loop over frames from the video stream
 	while True:
+		# ----------------------------- #
+		# ----- Fatigue Detection ----- #
+		# ----------------------------- #
 		# grab the frame from the threaded video file stream, resize
 		# it, and convert it to grayscale
 		# channels)
@@ -148,13 +153,18 @@ def start_procedure(equipment_data):
 			if ear > EYE_AR_THRESH:
 				if switch == 1:
 					if(endTime - startTime >= 3):
-						playsound('./wakeUp.mp3', False)
+						playsound('data/wakeUp.mp3', False)
 						print('playing sound using playsound')
 						logger.warning("You showed some signs of fatigue/drowsiness.") 
 						COUNTER += 1
 					switch = 0
 			cv2.putText(frame, "EAR: {:.2f}".format(ear), (10, 30),
 				cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+			
+		# --------------------------- #	
+		# ----- Equipment Check ----- #
+		# --------------------------- #
+
 		# Choose a suitable font
 		font = cv2.FONT_HERSHEY_SIMPLEX
 		ret, frame1 = image.read()
@@ -185,7 +195,7 @@ def start_procedure(equipment_data):
 		
 
         # Show the frame   
-		cv2.imshow('Frame', frame1)
+		cv2.imshow('Frame1', frame1)
 		# show the frame
 		cv2.imshow("Frame", frame)
 		key = cv2.waitKey(1) & 0xFF
@@ -201,3 +211,5 @@ def start_procedure(equipment_data):
 	doc_ref = db.collection(u'records').document(u'patient')
 	doc_ref.update({u'time':ENDING - STARTING})
 	doc_ref.update({u'fatigues':COUNTER})
+
+start_procedure(random)

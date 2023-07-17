@@ -115,7 +115,7 @@ while True:
 		if ear > EYE_AR_THRESH:
 			if switch == 1:
 				if(endTime - startTime >= 3):
-					playsound('./wakeUp.mp3', False)
+					playsound('data/wakeUp.mp3', False)
 					print('playing sound using playsound')
 					logger.warning("You showed some signs of fatigue/drowsiness.") 
 					COUNTER += 1

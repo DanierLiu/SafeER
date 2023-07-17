@@ -18,7 +18,7 @@ def gen_labels():
 # def update_equipment_data(equipment_data):
 # Disable scientific notation for clarity
 np.set_printoptions(suppress=True)
-image = cv2.VideoCapture(0)
+image = cv2.VideoCapture(1)
 # Load the model
 model = tensorflow.keras.models.load_model("./keras_model.h5")
 
