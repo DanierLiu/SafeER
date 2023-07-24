@@ -24,7 +24,7 @@ export default function Layout({ children, home }) {
       <Navbar />
 
       {!home && (
-        <div className={styles.backToHome}>
+        <div className={styles.homeButton}>
           <Link href="/">← Home</Link>
         </div>
       )}

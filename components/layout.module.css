@@ -13,3 +13,11 @@
 .backToHome {
   margin: 3rem 0 0;
 }
+
+.container {
+  padding: 2rem;
+}
+
+.homeButton {
+  margin-top: 1rem;
+}
