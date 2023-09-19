@@ -192,9 +192,9 @@ def start_procedure(user_data, equipment_data, user):
 		
 
         # Show the frame   
-		cv2.imshow('Frame1', frame1)
+		cv2.imshow('Equipment Check', frame1)
 		# show the frame
-		cv2.imshow("Frame", frame)
+		cv2.imshow("Fatigue Detection", frame)
 		key = cv2.waitKey(1) & 0xFF
 	
 		# if the `esc` key was pressed, break from the loop

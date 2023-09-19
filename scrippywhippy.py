@@ -10,7 +10,8 @@ app = Flask(__name__)
 
 @app.route("/", methods = ['POST'])
 def hello_world():
-    p1 = subprocess.Popen("python3 detect_blinks.py --shape-predictor shape_predictor_68_face_landmarks.dat".split(" "), start_new_session=True)
+    # For p1, switched out detect_blinks.py to vision.py.
+    p1 = subprocess.Popen("python3 vision.py --shape-predictor shape_predictor_68_face_landmarks.dat".split(" "), start_new_session=True)
     p2 = subprocess.Popen("python3 equipment_check.py".split(" "), start_new_session=True)
     p1.wait()
     p2.wait()
